@@ -1,27 +1,41 @@
 package com.ktboys.XTServer.Manager;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.jgroups.protocols.MFC;
+import org.jgroups.protocols.UFC;
 
 import com.ktboys.XTServer.HibernateSessionFactory;
 import com.ktboys.XTServer.Entity.User;
 import com.ktboys.XTServer.Entity.Userditals;
+import com.ktboys.XTServer.Entity.Userfriend;
 
 public class UserManage {
 
 	private User mUser = null;
 	private Session session;
 	private Transaction transaction;
+	private ArrayList<String> friends = new ArrayList<String>();
 
 	public void close() {
 		session.close();
 	}
-	
+
 	public UserManage() {
 		session = HibernateSessionFactory.getSession();
+	}
+
+	public UserManage(int Id) {
+		session = HibernateSessionFactory.getSession();
+		String hql = "from User u where u.userId=" + Id;
+
+		Query query = session.createQuery(hql);
+		mUser = (User) query.uniqueResult();
 	}
 
 	public UserManage(String token) {
@@ -41,10 +55,10 @@ public class UserManage {
 
 	}
 
-	public boolean isExist(){
+	public boolean isExist() {
 		return (mUser != null);
 	}
-	
+
 	public void registUser(String username, String password) {
 
 		String hqlSame = " from User u where u.username = '" + username + "' ";
@@ -66,7 +80,7 @@ public class UserManage {
 			ud.setRegdate(new Timestamp(System.currentTimeMillis()));
 			session.save(ud);
 			transaction.commit();
-			
+
 		}
 	}
 
@@ -97,11 +111,51 @@ public class UserManage {
 			return null;
 		}
 	}
-	public int getUserId(){
+
+	public int getUserId() {
 		if (mUser != null) {
 			return mUser.getUserId();
 		} else {
 			return -1;
 		}
+	}
+
+	public int addFriend(String username) {
+
+		if (mUser != null) {
+			transaction = session.beginTransaction();
+
+			String hql = " from User u where u.username='" + username + "'";
+			Query query = session.createQuery(hql);
+			User user = (User) query.uniqueResult();
+
+			String hqlId = " select uf.userfriend from Userfriend uf where uf.userfriend >=ALL(select uf.userfriend from uf)";
+			Query queryId = session.createQuery(hqlId);
+			int id = (int) queryId.uniqueResult();
+			id++;
+			Userfriend uf = new Userfriend(id, mUser, user);
+
+			session.save(uf);
+			transaction.commit();
+		}
+		return 1;
+	}
+
+	public ArrayList<String> getFriends() {
+
+		friends.clear();
+
+		String hql = " select uf.userByOwnedId from Userfriend uf where uf.userByOwnerId in (from User u where u.userId="
+				+ mUser.getUserId()+")";
+		Query query = session.createQuery(hql);
+		List<User> users = query.list();
+		for (User ur : users) {
+			String hqlNickName = "select ud.nickname from Userditals ud where ud.userId = "
+					+ ur.getUserId();
+			Query nnQuery = session.createQuery(hqlNickName);
+			friends.add((String)nnQuery.uniqueResult());
+		}
+
+		return friends;
 	}
 }
