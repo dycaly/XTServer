@@ -11,6 +11,7 @@ import org.jgroups.protocols.MFC;
 import org.jgroups.protocols.UFC;
 
 import com.ktboys.XTServer.HibernateSessionFactory;
+import com.ktboys.XTServer.Entity.Reqaddfriend;
 import com.ktboys.XTServer.Entity.User;
 import com.ktboys.XTServer.Entity.Userditals;
 import com.ktboys.XTServer.Entity.Userfriend;
@@ -34,6 +35,16 @@ public class UserManage {
 		session = HibernateSessionFactory.getSession();
 		String hql = "from User u where u.userId=" + Id;
 
+		Query query = session.createQuery(hql);
+		mUser = (User) query.uniqueResult();
+	}
+
+	public UserManage(String username, int method) {
+		if (method != 2015111) {
+			return;
+		}
+		session = HibernateSessionFactory.getSession();
+		String hql = "from User u where u.username='" + username + "'";
 		Query query = session.createQuery(hql);
 		mUser = (User) query.uniqueResult();
 	}
@@ -84,15 +95,19 @@ public class UserManage {
 		}
 	}
 
-	public void updatePassword(String password) {
+	public int updatePassword(String bepassword, String password) {
 		if (mUser == null) {
-			return;
+			return 1;
+		}
+		if (!bepassword.equals(mUser.getPassword())) {
+			return 2;
 		}
 		transaction = session.beginTransaction();
 		mUser.setPassword(password);
 		mUser.setToken(mUser.getUsername() + "_" + password);
 		session.update(mUser);
 		transaction.commit();
+		return 0;
 	}
 
 	public String getToken() {
@@ -146,16 +161,99 @@ public class UserManage {
 		friends.clear();
 
 		String hql = " select uf.userByOwnedId from Userfriend uf where uf.userByOwnerId in (from User u where u.userId="
-				+ mUser.getUserId()+")";
+				+ mUser.getUserId() + ")";
 		Query query = session.createQuery(hql);
 		List<User> users = query.list();
 		for (User ur : users) {
 			String hqlNickName = "select ud.nickname from Userditals ud where ud.userId = "
 					+ ur.getUserId();
 			Query nnQuery = session.createQuery(hqlNickName);
-			friends.add((String)nnQuery.uniqueResult());
+			friends.add((String) nnQuery.uniqueResult());
 		}
 
 		return friends;
+	}
+
+	public int reqAddFriend(String username) {
+		UserManage um = new UserManage(username, 2015111);
+		String he = "from Userfriend uf where uf.userByOwnerId in (from User u1 where u1.userId="
+				+ this.getUserId() + ") and uf.userByOwnedId in (from User u2 where u2.userId="+um.getUserId()+")";
+		Query query1 = session.createQuery(he);
+		Userfriend uf1 = (Userfriend) query1.uniqueResult();
+		if (uf1!=null) {
+			return 2;
+		}
+		if (um.isExist()) {
+			String hql = "from Reqaddfriend raf where raf.userByReqerId in (from User u where u.userId="
+					+ mUser.getUserId()
+					+ ") and raf.userByReqedId in (from User uk where uk.userId="
+					+ um.getUserId() + ")";
+			Query query = session.createQuery(hql);
+			Reqaddfriend mRaf = (Reqaddfriend) query.uniqueResult();
+			if (mRaf != null) {
+				return 1;
+			}
+			transaction = session.beginTransaction();
+			Reqaddfriend raf = new Reqaddfriend(um.getUser(), mUser,
+					new Timestamp(System.currentTimeMillis()));
+			session.save(raf);
+			transaction.commit();
+			return 0;
+		} else {
+			return 3;
+		}
+
+	}
+
+	public int operateAddFriend(String username, int operate) {
+		UserManage umReqer = new UserManage(username, 2015111);
+		String hql = "from Reqaddfriend raf where raf.userByReqedId in (from User u where u.userId="
+				+ mUser.getUserId()
+				+ ") and raf.userByReqerId in (from User uk where uk.userId="
+				+ umReqer.getUserId() + ")";
+		Query query = session.createQuery(hql);
+		Reqaddfriend mRaf = (Reqaddfriend) query.uniqueResult();
+		if (mRaf == null) {
+			return 1;
+		}
+		transaction = session.beginTransaction();
+		session.delete(mRaf);
+		transaction.commit();
+		if (operate == 0) {
+			this.addFriend(username);
+			umReqer.addFriend(this.getUserName());
+			return 0;
+		} else {
+			return 0;
+		}
+	}
+
+	public int deleteFriend(String username) {
+
+		UserManage um = new UserManage(username, 2015111);
+
+		String hql1 = "from Userfriend uf where uf.userByOwnerId in (from User u1 where u1.userId="
+				+ this.getUserId() + ") and uf.userByOwnedId in (from User u2 where u2.userId="+um.getUserId()+")";
+		String hql2 = "from Userfriend uf where uf.userByOwnerId in (from User u1 where u1.userId="
+				+ um.getUserId() + ") and uf.userByOwnedId in (from User u2 where u2.userId="+this.getUserId()+")";
+		transaction = session.beginTransaction();
+		Query query1 = session.createQuery(hql1);
+		Query query2 = session.createQuery(hql2);
+		Userfriend uf1 = (Userfriend) query1.uniqueResult();
+		Userfriend uf2 = (Userfriend) query2.uniqueResult();
+		if (uf1 !=null && uf2!=null) {
+			session.delete(uf1);
+			session.delete(uf2);
+			transaction.commit();
+			return 0;
+		}
+		else {
+			return 1;
+		} 
+		
+	}
+
+	public User getUser() {
+		return mUser;
 	}
 }

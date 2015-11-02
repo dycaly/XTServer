@@ -40,7 +40,6 @@ public class RegistTest {
 		String password = "123";
 		UserManage um = new UserManage(username, password);
 		if (um.isExist()) {
-			um.updatePassword("987");
 			System.out.println("×¢²á³É¹¦");
 		}
 		else{

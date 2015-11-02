@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ktboys.XTServer.Manager.UserManage;
+import com.ktboys.XTServer.Manager.SearchUserManage;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class SearchUser
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/SearchUser")
+public class SearchUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public SearchUser() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,23 +37,16 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		int method = Integer.parseInt(request.getParameter("method"));
+		SearchUserManage sum=new SearchUserManage(name, method);
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
-		UserManage um = new UserManage(username, password);
 		PrintWriter pw = response.getWriter();
-		if (um.isExist()){
-			String result="{\"status\":0,\"token\":\""+um.getToken()+"\"}";
-			System.out.println(result);
-			pw.write(result);
-		}
-		else {
-			String result="{\"status\":1,\"reason\":\"用户名或密码错误\"}";
-			System.out.println(result);
-			pw.write(result);
-		}
-		um.close();
+		String result = sum.getJson();
+		System.out.println(result);
+		pw.write(result);
+		sum.close();
 	}
 
 }

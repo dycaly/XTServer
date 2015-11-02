@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import com.google.gson.Gson;
 import com.ktboys.XTServer.HibernateSessionFactory;
 import com.ktboys.XTServer.Entity.Userditals;
+import com.ktboys.XTServer.Result.UserDitalsResult;
 
 public class UserDitalsManage {
 
@@ -29,9 +30,14 @@ public class UserDitalsManage {
 
 	public String getJson() {
 		if (mUserditals != null) {
-
+			Userditals ud = this.getUserditals();
+			UserDitalsResult udr = new UserDitalsResult(0, ud.getPicUrl(),
+					ud.getNickname(), ud.getName(), ud.getAge(), ud.getSex(),
+					ud.getSchool(), ud.getCollege(), ud.getEmail(), ud.getPhone(),
+					ud.getRegdate().toString());
 			Gson gson = new Gson();
-			return gson.toJson(mUserditals);
+			String str = gson.toJson(udr);
+			return str;
 		} else {
 			return null;
 		}
@@ -53,5 +59,8 @@ public class UserDitalsManage {
 		session.update(mUserditals);
 		transaction.commit();
 		return 0;
+	}
+	public Userditals getUserditals(){
+		return mUserditals;
 	}
 }

@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.ktboys.XTServer.Manager.UserManage;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class RequestAddFriend
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/RequestAddFriend")
+public class RequestAddFriend extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public RequestAddFriend() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,19 +37,38 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String token = request.getParameter("token");
 		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		
+		UserManage um = new UserManage(token);
+		int rlt = um.reqAddFriend(username);
+		
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
-		UserManage um = new UserManage(username, password);
 		PrintWriter pw = response.getWriter();
-		if (um.isExist()){
-			String result="{\"status\":0,\"token\":\""+um.getToken()+"\"}";
+		if (rlt == 0) {
+			String result="{\"status\":0}";
+			System.out.println(result);
+			pw.write(result);
+		}
+		else if (rlt==1) {
+			String result="{\"status\":1,\"reason\":\"请求已存在\"}";
+			System.out.println(result);
+			pw.write(result);
+		}
+		else if (rlt==2) {
+			String result="{\"status\":2,\"reason\":\"好友已存在\"}";
+			System.out.println(result);
+			pw.write(result);
+		}
+		else if (rlt==3) {
+			String result="{\"status\":3,\"reason\":\"不能添加自己为好友\"}";
 			System.out.println(result);
 			pw.write(result);
 		}
 		else {
-			String result="{\"status\":1,\"reason\":\"用户名或密码错误\"}";
+			String result="{\"status\":2,\"reason\":\"请求失败\"}";
 			System.out.println(result);
 			pw.write(result);
 		}

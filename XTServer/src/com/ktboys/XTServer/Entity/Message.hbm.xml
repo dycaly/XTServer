@@ -8,7 +8,7 @@
     <class name="com.ktboys.XTServer.Entity.Message" table="message" catalog="dycaly">
         <id name="messageId" type="java.lang.Integer">
             <column name="messageID" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <many-to-one name="userBySenderId" class="com.ktboys.XTServer.Entity.User" fetch="select">
             <column name="senderID" not-null="true" />
@@ -21,6 +21,9 @@
         </property>
         <property name="sendate" type="java.sql.Timestamp">
             <column name="sendate" length="19" not-null="true" />
+        </property>
+        <property name="isSaw" type="java.lang.Integer">
+            <column name="isSaw" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

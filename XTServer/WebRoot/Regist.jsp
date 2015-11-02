@@ -26,7 +26,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	username:<input type="text" name="username"><br>
     	password:<input type="password" name="password"><br>
     	submit:<input type="submit" value="submit"><br>
-    	
     </form>
   </body>
 </html>

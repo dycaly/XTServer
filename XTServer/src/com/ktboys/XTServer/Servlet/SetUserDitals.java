@@ -54,16 +54,15 @@ public class SetUserDitals extends HttpServlet {
 					Integer.parseInt(request.getParameter("age")),
 					Integer.parseInt(request.getParameter("sex")),
 					request.getParameter("school"),
-					request.getParameter("cololege"),
+					request.getParameter("college"),
 					request.getParameter("email"),
 					request.getParameter("phone"));
 			String result="{\"status\":0}";
 			System.out.println(result);
 			pw.write(result);
-			udm.close();
 		}
 		else {
-			String result="{\"status\":`1,\"reason\":\"ÐÞ¸ÄÊ§°Ü\"}";
+			String result="{\"status\":1,\"reason\":\"ÐÞ¸ÄÊ§°Ü\"}";
 			System.out.println(result);
 			pw.write(result);
 		}

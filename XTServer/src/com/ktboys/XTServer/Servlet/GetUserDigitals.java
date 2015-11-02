@@ -40,7 +40,8 @@ public class GetUserDigitals extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String token = request.getParameter("token");
 			UserManage um = new UserManage(token);
-			
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("content-type","text/html;charset=UTF-8");
 			PrintWriter pw = response.getWriter();
 			
 			if (um.isExist()) {
@@ -52,7 +53,7 @@ public class GetUserDigitals extends HttpServlet {
 				udm.close();
 			}
 			else {
-				String result="{\"status\":`1,\"reson\":\"≤È—Ø ß∞‹\"}";
+				String result="{\"status\":1,\"reson\":\"≤È—Ø ß∞‹\"}";
 				System.out.println(result);
 				pw.write(result);
 			}

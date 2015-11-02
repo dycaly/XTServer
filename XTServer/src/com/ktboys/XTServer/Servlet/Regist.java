@@ -39,7 +39,8 @@ public class Regist extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("content-type","text/html;charset=UTF-8");
 		UserManage um = new UserManage();
 		um.registUser(username, password);
 		PrintWriter pw = response.getWriter();
@@ -49,7 +50,7 @@ public class Regist extends HttpServlet {
 			pw.write(result);
 		}
 		else {
-			String result="{\"status\":`1,\"reson\":\"该用户名已被注册\"}";
+			String result="{\"status\":1,\"reason\":\"该用户名已被注册\"}";
 			System.out.println(result);
 			pw.write(result);
 		}

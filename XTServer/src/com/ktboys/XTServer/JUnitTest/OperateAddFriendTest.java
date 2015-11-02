@@ -2,15 +2,13 @@ package com.ktboys.XTServer.JUnitTest;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ktboys.XTServer.Manager.UserManage;
 
-public class GetFriends {
+public class OperateAddFriendTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -22,16 +20,8 @@ public class GetFriends {
 
 	@Test
 	public void test() {
-		UserManage um = new UserManage(5);
-		ArrayList<String> friends=  um.getFriends();
-		
-		System.out.println("----start----"+friends.size()+"--");
-		for(String str :friends){
-			System.out.println(str);
-		}
-		System.out.println("----end----");
-		um.close();
+		UserManage umManage = new UserManage("15583675009",2015111);
+		umManage.operateAddFriend("trsTest", 0);
 	}
-	
 
 }

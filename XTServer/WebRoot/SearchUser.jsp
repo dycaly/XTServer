@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -22,9 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     This is my JSP page. <br>
-    <form action="Regist" method="post">
-    	username:<input type="text" name="username"><br>
-    	password:<input type="password" name="password"><br>
+    <form action="SearchUser" method="post">
+    	name:<input type="text" name="name"><br>
+    	method:<input type="text" name="method"><br>
     	submit:<input type="submit" value="submit"><br>
     	
     </form>

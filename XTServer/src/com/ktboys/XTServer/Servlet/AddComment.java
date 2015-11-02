@@ -9,19 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ktboys.XTServer.Manager.ProductManage;
 import com.ktboys.XTServer.Manager.UserManage;
 
 /**
- * Servlet implementation class UdPassWord
+ * Servlet implementation class AddComment
  */
-@WebServlet("/UdPassWord")
-public class UdPassWord extends HttpServlet {
+@WebServlet("/AddComment")
+public class AddComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UdPassWord() {
+	public AddComment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -42,30 +43,20 @@ public class UdPassWord extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getParameter("token");
-		String bepassword = request.getParameter("bepassword");
-		String password = request.getParameter("password");
+		String content = request.getParameter("content");
+		int productid = Integer.parseInt(request.getParameter("productid"));
+		ProductManage pm = new ProductManage(productid);
+		pm.addComment(token, content);
 
-		PrintWriter pw = response.getWriter();
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
-		UserManage um = new UserManage(token);
 
-		int rlt = um.updatePassword(bepassword, password);
-		if (rlt == 1) {
-			String result = "{\"status\":1,\"reason\":\"–ﬁ∏ƒ√‹¬Î ß∞‹\"}";
-			System.out.println(result);
-			pw.write(result);
-		} else if (rlt == 2) {
-			String result = "{\"status\"2,\"reason\":\"√‹¬Î¥ÌŒÛ\"}";
-			System.out.println(result);
-			pw.write(result);
-		} else {
-			String result = "{\"status\":0,\"token\":\"" + um.getToken()
-					+ "\"}";
-			System.out.println(result);
-			pw.write(result);
-		}
-		um.close();
+		PrintWriter pw = response.getWriter();
+
+		String result = "{\"status\":0}";
+		System.out.println(result);
+		pw.write(result);
+
 	}
 
 }

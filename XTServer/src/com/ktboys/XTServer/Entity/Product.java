@@ -21,6 +21,7 @@ public class Product implements java.io.Serializable {
 	private String productIntro;
 	private Integer hightestPrice;
 	private Integer lowestPrice;
+	private Integer cutPrice;
 	private Integer cutTime;
 	private Integer status;
 	private Timestamp sellDate;
@@ -35,13 +36,10 @@ public class Product implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Product(Integer productId, User userByBuyerId, Classify classify,
-			User userBySellerId, String productUrl, String productName,
-			String productIntro, Integer hightestPrice, Integer lowestPrice,
-			Integer cutTime, Integer status, Timestamp sellDate,
-			Integer lastPrice) {
-		this.productId = productId;
-		this.userByBuyerId = userByBuyerId;
+	public Product(Classify classify, User userBySellerId, String productUrl,
+			String productName, String productIntro, Integer hightestPrice,
+			Integer lowestPrice, Integer cutPrice, Integer cutTime,
+			Integer status, Timestamp sellDate) {
 		this.classify = classify;
 		this.userBySellerId = userBySellerId;
 		this.productUrl = productUrl;
@@ -49,19 +47,18 @@ public class Product implements java.io.Serializable {
 		this.productIntro = productIntro;
 		this.hightestPrice = hightestPrice;
 		this.lowestPrice = lowestPrice;
+		this.cutPrice = cutPrice;
 		this.cutTime = cutTime;
 		this.status = status;
 		this.sellDate = sellDate;
-		this.lastPrice = lastPrice;
 	}
 
 	/** full constructor */
-	public Product(Integer productId, User userByBuyerId, Classify classify,
-			User userBySellerId, String productUrl, String productName,
-			String productIntro, Integer hightestPrice, Integer lowestPrice,
+	public Product(User userByBuyerId, Classify classify, User userBySellerId,
+			String productUrl, String productName, String productIntro,
+			Integer hightestPrice, Integer lowestPrice, Integer cutPrice,
 			Integer cutTime, Integer status, Timestamp sellDate,
 			Integer lastPrice, Set homes, Set comments) {
-		this.productId = productId;
 		this.userByBuyerId = userByBuyerId;
 		this.classify = classify;
 		this.userBySellerId = userBySellerId;
@@ -70,6 +67,7 @@ public class Product implements java.io.Serializable {
 		this.productIntro = productIntro;
 		this.hightestPrice = hightestPrice;
 		this.lowestPrice = lowestPrice;
+		this.cutPrice = cutPrice;
 		this.cutTime = cutTime;
 		this.status = status;
 		this.sellDate = sellDate;
@@ -150,6 +148,14 @@ public class Product implements java.io.Serializable {
 
 	public void setLowestPrice(Integer lowestPrice) {
 		this.lowestPrice = lowestPrice;
+	}
+
+	public Integer getCutPrice() {
+		return this.cutPrice;
+	}
+
+	public void setCutPrice(Integer cutPrice) {
+		this.cutPrice = cutPrice;
 	}
 
 	public Integer getCutTime() {
