@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Timer;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ import com.ktboys.XTServer.Result.CommentInfo;
 import com.ktboys.XTServer.Result.CommentResult;
 import com.ktboys.XTServer.Result.ProductInfo;
 import com.ktboys.XTServer.Result.ProductResult;
+import com.ktboys.XTServer.Time.MyTask;
 
 public class ProductManage {
 
@@ -56,6 +58,9 @@ public class ProductManage {
 				lowestPrice, cutprice, cutTime, status, sellDate);
 		session.save(mProduct);
 		transaction.commit();
+		
+		Timer timer = new Timer();
+		timer.schedule(new MyTask(mProduct), cutTime *1000, 1000 * cutTime);
 	}
 
 	public int buyProduct(String token) {
@@ -67,7 +72,7 @@ public class ProductManage {
 		if (mProduct.getStatus() == 0) {
 			transaction = session.beginTransaction();
 			mProduct.setUserByBuyerId(um.getUser());
-			mProduct.setStatus(1);
+			mProduct.setStatus(2);
 			mProduct.setLastPrice(mProduct.getLastPrice());
 			session.update(mProduct);
 			transaction.commit();
@@ -115,5 +120,24 @@ public class ProductManage {
 		transaction = session.beginTransaction();
 		session.save(comment);
 		transaction.commit();
+	}
+	
+	public Product getProduct(){
+		return mProduct;
+	}
+	public String getProductInfoJson(){
+		String result=null;
+		Product product = mProduct;
+		UserDitalsManage udm = new UserDitalsManage(product.getUserBySellerId().getUserId());
+		ProductInfo productInfo = new ProductInfo(product.getProductUrl(), product
+				.getProductName(),udm.getUserditals().getNickname(), product.getProductIntro(), product
+				.getHightestPrice(), product.getLowestPrice(), product
+				.getCutTime(), product.getStatus(), product
+				.getUserBySellerId().getUsername(), product.getSellDate()
+				.toString(), product.getUserByBuyerId().getUsername(),
+				product.getLastPrice(), product.getClassify().getName());
+		Gson gson = new Gson();
+		result = gson.toJson(productInfo);
+		return result;
 	}
 }

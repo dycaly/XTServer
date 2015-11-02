@@ -48,7 +48,7 @@ public class ClassifyManage {
 					.getHightestPrice(), product.getLowestPrice(), product
 					.getCutTime(), product.getStatus(), product
 					.getUserBySellerId().getUsername(), product.getSellDate()
-					.toString(), product.getUserBySellerId().getUsername(),
+					.toString(), product.getUserByBuyerId().getUsername(),
 					product.getLastPrice(), product.getClassify().getName()));
 		}
 		Gson gson = new Gson();

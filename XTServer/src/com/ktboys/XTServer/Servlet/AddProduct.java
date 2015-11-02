@@ -58,9 +58,8 @@ public class AddProduct extends HttpServlet {
 		ProductManage pm = new ProductManage(
 				new ClassifyManage(classname).getClassify(), new UserManage(
 						token).getUser(), profucturl, productname,
-				productintro, hightestprice, cutPrice,lowestprice, cuttime, 0,
+				productintro, hightestprice, lowestprice,cutPrice, cuttime, 0,
 				new Timestamp(System.currentTimeMillis()));
-		pm.close();
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type", "text/html;charset=UTF-8");
 		PrintWriter pw = response.getWriter();
