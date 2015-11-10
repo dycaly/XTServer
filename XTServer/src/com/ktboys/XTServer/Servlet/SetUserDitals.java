@@ -2,6 +2,7 @@ package com.ktboys.XTServer.Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,12 +50,12 @@ public class SetUserDitals extends HttpServlet {
 			int id = um.getUserId();
 			UserDitalsManage udm = new UserDitalsManage(id);
 			udm.updateUserDitals(request.getParameter("picurl"),
-					request.getParameter("nickname"),
-					request.getParameter("name"),
+					URLDecoder.decode(request.getParameter("nickname"), "utf-8"),
+					URLDecoder.decode(request.getParameter("name"), "utf-8"),
 					Integer.parseInt(request.getParameter("age")),
 					Integer.parseInt(request.getParameter("sex")),
-					request.getParameter("school"),
-					request.getParameter("college"),
+					URLDecoder.decode(request.getParameter("school"), "utf-8"),
+					URLDecoder.decode(request.getParameter("college"), "utf-8"),
 					request.getParameter("email"),
 					request.getParameter("phone"));
 			String result="{\"status\":0}";

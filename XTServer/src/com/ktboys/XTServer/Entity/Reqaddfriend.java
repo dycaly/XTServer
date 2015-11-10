@@ -14,6 +14,7 @@ public class Reqaddfriend implements java.io.Serializable {
 	private User userByReqedId;
 	private User userByReqerId;
 	private Timestamp reqtime;
+	private Integer issaw;
 
 	// Constructors
 
@@ -23,10 +24,11 @@ public class Reqaddfriend implements java.io.Serializable {
 
 	/** full constructor */
 	public Reqaddfriend(User userByReqedId, User userByReqerId,
-			Timestamp reqtime) {
+			Timestamp reqtime, Integer issaw) {
 		this.userByReqedId = userByReqedId;
 		this.userByReqerId = userByReqerId;
 		this.reqtime = reqtime;
+		this.issaw = issaw;
 	}
 
 	// Property accessors
@@ -61,6 +63,14 @@ public class Reqaddfriend implements java.io.Serializable {
 
 	public void setReqtime(Timestamp reqtime) {
 		this.reqtime = reqtime;
+	}
+
+	public Integer getIssaw() {
+		return this.issaw;
+	}
+
+	public void setIssaw(Integer issaw) {
+		this.issaw = issaw;
 	}
 
 }

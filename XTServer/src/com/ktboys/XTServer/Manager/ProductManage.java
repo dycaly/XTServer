@@ -53,9 +53,9 @@ public class ProductManage {
 			Timestamp sellDate) {
 		session = HibernateSessionFactory.getSession();
 		transaction = session.beginTransaction();
-		mProduct = new Product( classify,userBySellerId, 
+		mProduct = new Product( userBySellerId,classify,userBySellerId, 
 				productUrl, productName, productIntro, hightestPrice,
-				lowestPrice, cutprice, cutTime, status, sellDate);
+				lowestPrice, cutprice, cutTime, status, sellDate,hightestPrice);
 		session.save(mProduct);
 		transaction.commit();
 		
@@ -129,10 +129,10 @@ public class ProductManage {
 		String result=null;
 		Product product = mProduct;
 		UserDitalsManage udm = new UserDitalsManage(product.getUserBySellerId().getUserId());
-		ProductInfo productInfo = new ProductInfo(product.getProductUrl(), product
+		ProductInfo productInfo = new ProductInfo(product.getProductId(),product.getProductUrl(), product
 				.getProductName(),udm.getUserditals().getNickname(), product.getProductIntro(), product
 				.getHightestPrice(), product.getLowestPrice(), product
-				.getCutTime(), product.getStatus(), product
+				.getCutTime(),product.getCutPrice(), product.getStatus(), product
 				.getUserBySellerId().getUsername(), product.getSellDate()
 				.toString(), product.getUserByBuyerId().getUsername(),
 				product.getLastPrice(), product.getClassify().getName());

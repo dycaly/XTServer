@@ -19,5 +19,8 @@
         <property name="reqtime" type="java.sql.Timestamp">
             <column name="reqtime" length="19" not-null="true" />
         </property>
+        <property name="issaw" type="java.lang.Integer">
+            <column name="issaw" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

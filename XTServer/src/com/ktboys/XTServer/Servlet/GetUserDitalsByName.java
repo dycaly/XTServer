@@ -9,19 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ktboys.XTServer.Manager.UserDitalsManage;
 import com.ktboys.XTServer.Manager.UserManage;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class GetUserDitalsByName
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/GetUserDitalsByName")
+public class GetUserDitalsByName extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public GetUserDitalsByName() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,23 +39,25 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		UserManage um = new UserManage(username,2015111);
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
-		UserManage um = new UserManage(username, password);
 		PrintWriter pw = response.getWriter();
-		if (um.isExist()){
-			String result="{\"status\":0,\"token\":\""+um.getToken()+"\"}";
+		
+		if (um.isExist()) {
+			int id = um.getUserId();
+			UserDitalsManage udm = new UserDitalsManage(id);
+			String result = udm.getJson();
 			System.out.println(result);
 			pw.write(result);
-		
+			udm.close();
+
 		}
 		else {
-			String result="{\"status\":1,\"reason\":\"用户名或密码错误\"}";
+			String result="{\"status\":1,\"reson\":\"查询失败\"}";
 			System.out.println(result);
-			pw.write(result);
+			pw.write(result);;
 		}
-		um.close();
 	}
 
 }

@@ -29,10 +29,10 @@
 		<mapping resource="com/ktboys/XTServer/Entity/Classify.hbm.xml" />
 		<mapping
 			resource="com/ktboys/XTServer/Entity/Userditals.hbm.xml" />
-		<mapping
-			resource="com/ktboys/XTServer/Entity/Reqaddfriend.hbm.xml" />
 		<mapping resource="com/ktboys/XTServer/Entity/Message.hbm.xml" />
 		<mapping resource="com/ktboys/XTServer/Entity/Product.hbm.xml" />
+		<mapping
+			resource="com/ktboys/XTServer/Entity/Reqaddfriend.hbm.xml" />
 
 	</session-factory>
 

@@ -51,13 +51,13 @@ public class GetUserDigitals extends HttpServlet {
 				System.out.println(result);
 				pw.write(result);
 				udm.close();
+
 			}
 			else {
 				String result="{\"status\":1,\"reson\":\"≤È—Ø ß∞‹\"}";
 				System.out.println(result);
-				pw.write(result);
+				pw.write(result);;
 			}
-		    um.close();
 		    
 	}
 

@@ -52,8 +52,11 @@ public class MessageManage {
 		transaction = session.beginTransaction();
 		for (Message m : messages) {
 			if (m.getIsSaw() == 0 && m.getUserByReceverId().getUserId() == mUserManage.getUserId()) {
+				
+				UserDitalsManage uManage = new UserDitalsManage(m.getUserBySenderId().getUserId());
+				
 				mr.addMessageInfo(new MessageInfo(m.getUserBySenderId()
-						.getUsername(), m.getUserByReceverId().getUsername(),
+						.getUsername(),uManage.getUserditals().getNickname(), m.getUserByReceverId().getUsername(),
 						m.getContent(), m.getSendate().toString()));
 				m.setIsSaw(1);
 				session.update(m);

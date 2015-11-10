@@ -43,10 +43,10 @@ public class ClassifyManage {
 		while (iterator.hasNext()) {
 			Product product = (Product) iterator.next();
 			UserDitalsManage udm = new UserDitalsManage(product.getUserBySellerId().getUserId());
-			pr.addProductInfo(new ProductInfo(product.getProductUrl(), product
+			pr.addProductInfo(new ProductInfo(product.getProductId(),product.getProductUrl(), product
 					.getProductName(),udm.getUserditals().getNickname(), product.getProductIntro(), product
 					.getHightestPrice(), product.getLowestPrice(), product
-					.getCutTime(), product.getStatus(), product
+					.getCutTime(), product.getCutPrice(),product.getStatus(), product
 					.getUserBySellerId().getUsername(), product.getSellDate()
 					.toString(), product.getUserByBuyerId().getUsername(),
 					product.getLastPrice(), product.getClassify().getName()));

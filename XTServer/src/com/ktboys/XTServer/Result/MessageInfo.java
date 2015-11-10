@@ -3,12 +3,14 @@ package com.ktboys.XTServer.Result;
 public class MessageInfo {
 
 	private String sender;
+	private String nickname;
 	private String receiver;
 	private String content;
 	private String time;
-	public MessageInfo(String sender, String receiver, String content,
+	public MessageInfo(String sender,String nickname, String receiver, String content,
 			String time) {
 		this.sender = sender;
+		this.nickname = nickname;
 		this.receiver = receiver;
 		this.content = content;
 		this.time = time;

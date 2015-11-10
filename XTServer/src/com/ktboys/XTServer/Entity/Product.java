@@ -36,10 +36,11 @@ public class Product implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Product(Classify classify, User userBySellerId, String productUrl,
+	public Product(User userByBuyerId,Classify classify, User userBySellerId, String productUrl,
 			String productName, String productIntro, Integer hightestPrice,
 			Integer lowestPrice, Integer cutPrice, Integer cutTime,
-			Integer status, Timestamp sellDate) {
+			Integer status, Timestamp sellDate,Integer lastPrice) {
+		this.userByBuyerId = userByBuyerId;
 		this.classify = classify;
 		this.userBySellerId = userBySellerId;
 		this.productUrl = productUrl;
@@ -51,6 +52,7 @@ public class Product implements java.io.Serializable {
 		this.cutTime = cutTime;
 		this.status = status;
 		this.sellDate = sellDate;
+		this.lastPrice = lastPrice;
 	}
 
 	/** full constructor */
